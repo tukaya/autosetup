@@ -12,6 +12,7 @@ namespace AutoSetup.UnitTests.CodeAnalyzers
         }
 
         [Theory]
+        [InlineData("SomeClassTest", "SomeClass")]
         [InlineData("SomeClassTests", "SomeClass")]
         [InlineData("SomeClassUnitTests", "SomeClass")]
         [InlineData("SomeClassUnitTests_SomeMethod", "SomeClass")]
