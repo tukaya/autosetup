@@ -1,5 +1,5 @@
 
-[![Build status](https://ci.appveyor.com/api/projects/status/51wn45ti1i8k4obv/branch/master?svg=true)](https://ci.appveyor.com/project/TubaKaya/autosetup/branch/master)
+[![Build Status](https://dev.azure.com/tubakaya/autosetup/_apis/build/status/autosetup?branchName=master)](https://dev.azure.com/tubakaya/autosetup/_build/latest?definitionId=25&branchName=master)
 [![Nuget Downloads](https://img.shields.io/nuget/dt/autosetup.svg)](https://www.nuget.org/packages/AutoSetup/)
 
 # AutoSetup

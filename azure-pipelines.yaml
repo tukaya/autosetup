@@ -1,0 +1,74 @@
+variables: 
+  Major: 1
+  Minor: 2
+  Patch: 0
+  Version: $(Major).$(Minor).$(Patch)
+  Revision: $[counter(variables['Build.SourceBranchName'], 1)]
+  ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+    VersionSuffix: ''
+  ${{ if ne( variables['Build.SourceBranchName'], 'master') }}:
+    VersionSuffix: -${{ variables['Build.SourceBranchName'] }}-$(Revision)
+  PackageVersion: ${{ variables.Version }}${{ variables.VersionSuffix }}
+
+name: ${{ variables.PackageVersion }}
+
+pool:
+  name: Azure Pipelines
+  vmImage: 'windows-latest'
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - '*'
+pr: none
+
+stages:
+- stage: build 
+  displayName: "Build & Deploy"
+  jobs:
+  - job: build
+    
+    steps:
+    - task: NuGetToolInstaller@1
+      displayName: 'Use NuGet '
+
+    - bash: |
+       nuget restore
+      displayName: 'nuget restore'
+      workingDirectory: 'src'
+
+    - script: 'dotnet build src\autosetup\autosetup.csproj -c Release'
+      displayName: 'Build autosetup'
+
+    - script: 'dotnet test src\AutoSetup.UnitTests\AutoSetup.UnitTests.csproj'
+      displayName: 'Run unit tests'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet pack'
+      inputs:
+        command: pack
+        packagesToPack: src\autosetup\autosetup.csproj
+        configuration: Release
+        versioningScheme: byEnvVar
+        versionEnvVar: PackageVersion
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+
+    - task: NuGetCommand@2
+      displayName: 'Publish Artifact to Azure Devops Feed'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: '4b9195ef-37f9-45f1-a5e7-3f1aaa98d7fb/de1f63f3-ab39-43e4-bf25-5a7f2b4eb87e'
+    
+    - task: NuGetCommand@2
+      displayName: 'Publish Artifact to nuget when master'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'tubakayanuget'

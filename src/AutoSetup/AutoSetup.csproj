@@ -2,13 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>AutoSetup</PackageId>
-    <PackageVersion>1.1.1</PackageVersion>
     <Authors>Tuba Kaya</Authors>
     <Product>AutoSetup</Product>
     <Description>Generates fields and setup method for class under test.</Description>

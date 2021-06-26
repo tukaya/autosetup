@@ -8,7 +8,7 @@ namespace AutoSetup.UnitTests.CodeAnalyzers
         [Theory]
         [InlineData("Tests", true)]
         [InlineData("BlaTests", true)]
-        [InlineData("BlaTest", false)]
+        [InlineData("BlaTest", true)]
         [InlineData("Bla", false)]
         public void ReturnsTrueIfNameEndsWithTests(string className, bool expected)
         {

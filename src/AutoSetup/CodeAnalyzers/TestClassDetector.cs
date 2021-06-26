@@ -4,7 +4,7 @@
     {
         public static bool IsTestClass(string className)
         {
-            return className.EndsWith("Tests");
+            return className.EndsWith("Test") || className.EndsWith("Tests");
         }
     }
 }
