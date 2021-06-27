@@ -1,7 +1,7 @@
 variables: 
   Major: 1
   Minor: 2
-  Patch: 0
+  Patch: 1
   Version: $(Major).$(Minor).$(Patch)
   Revision: $[counter(variables['Build.SourceBranchName'], 1)]
   ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:

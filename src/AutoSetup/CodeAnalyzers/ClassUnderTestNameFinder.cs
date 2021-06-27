@@ -16,7 +16,7 @@ namespace AutoSetup.CodeAnalyzers
                 return null;
             }
 
-            var keys = new List<string> { "UnitTests", "Tests" };
+            var keys = new List<string> { "UnitTests", "Tests", "Test" };
 
             foreach (var key in keys)
             {
